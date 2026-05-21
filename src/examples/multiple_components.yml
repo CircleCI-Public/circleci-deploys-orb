@@ -12,7 +12,11 @@ jobs:
           component_name: frontend
           environment_name: production
           target_version: ${CIRCLE_SHA1:0:7}
-      # ... deploy steps ...
+      - aws-cli/setup:
+          role_arn: ${AWS_ROLE_ARN}
+      - run:
+          name: Deploy Frontend
+          command: ./deploy-frontend.sh
       - deploys/update_status:
           deploy_name: frontend-deploy
           status: SUCCESS
@@ -29,7 +33,11 @@ jobs:
           component_name: backend
           environment_name: production
           target_version: ${CIRCLE_SHA1:0:7}
-      # ... deploy steps ...
+      - aws-cli/setup:
+          role_arn: ${AWS_ROLE_ARN}
+      - run:
+          name: Deploy Backend
+          command: ./deploy-backend.sh
       - deploys/update_status:
           deploy_name: backend-deploy
           status: SUCCESS
