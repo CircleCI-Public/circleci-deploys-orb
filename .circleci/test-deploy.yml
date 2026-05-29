@@ -50,30 +50,6 @@ workflows:
           orb_name: circleci/deploys
           vcs_type: << pipeline.project.type >>
           pub_type: production
-          pre-steps:
-            - deploys/log:
-              component_name: circleci-deploys-orb
-              environment_name: test-log
-              target_version: "log-${CIRCLE_BUILD_NUM}-${CIRCLE_SHA1:0:7}"
-            - deploys/plan:
-                deploy_name: orb-release
-                component_name: circleci-deploys-orb
-                environment_name: orb-registry
-                target_version: << pipeline.git.tag >>
-          post-steps:
-            - deploys/update_status:
-                deploy_name: orb-release
-                status: RUNNING
-                when: always
-            - deploys/update_status:
-                deploy_name: orb-release
-                status: SUCCESS
-                when: on_success
-            - deploys/update_status:
-                deploy_name: orb-release
-                status: FAILED
-                failure_reason: "orb publish failed"
-                when: on_fail
           requires:
             - publish_dev
             - orb-tools/pack
