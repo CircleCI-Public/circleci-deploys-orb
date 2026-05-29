@@ -36,22 +36,11 @@ workflows:
       - orb-tools/pack:
           filters: *filters
       - orb-tools/publish:
-          name: publish_dev
-          orb_name: circleci/deploys
-          vcs_type: << pipeline.project.type >>
-          pub_type: dev
-          enable_pr_comment: true
-          requires:
-            - orb-tools/pack
-          context: orb-publisher
-          filters: *filters
-      - orb-tools/publish:
           name: publish_prod
           orb_name: circleci/deploys
           vcs_type: << pipeline.project.type >>
           pub_type: production
           requires:
-            - publish_dev
             - orb-tools/pack
           context: orb-publisher
           filters: *release-filters
